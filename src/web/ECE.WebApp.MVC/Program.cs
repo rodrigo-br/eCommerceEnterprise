@@ -2,7 +2,6 @@ using ECE.WebApp.MVC.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddWebAppConfiguration();
 builder.Services.AddIdentityConfiguration();
 builder.Services.RegisterServices();

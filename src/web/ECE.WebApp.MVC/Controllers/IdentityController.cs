@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using ECE.WebApp.MVC.Extensions;
 
 namespace ECE.WebApp.MVC.Controllers
 {
-    public class IdentityController : Controller
+    public class IdentityController : MainController
     {
         private readonly Services.IAuthenticationService _authenticationService;
 
@@ -31,6 +32,8 @@ namespace ECE.WebApp.MVC.Controllers
 
             var response = await _authenticationService.Register(userRegister);
 
+            if (ResponseHasErrors(response.ResponseResult)) return View(userRegister);
+
             await Login(response);
 
             return RedirectToAction("Index", "Home");
@@ -51,7 +54,9 @@ namespace ECE.WebApp.MVC.Controllers
 
             var response = await _authenticationService.Login(userLogin);
 
-            await Login(response);
+			if (ResponseHasErrors(response.ResponseResult)) return View(userLogin);
+
+			await Login(response);
 
             return RedirectToAction("Index", "Home");
         }
@@ -60,6 +65,7 @@ namespace ECE.WebApp.MVC.Controllers
         [Route("logout")]
         public async Task<IActionResult> Logout()
         {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 			return RedirectToAction("Index", "Home");
 		}
 

@@ -30,7 +30,7 @@ namespace ECE.Identity.API.Controllers
         [HttpPost("new-account")]
         public async Task<IActionResult> Register(UserRegister userRegister)
         {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
+			if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var user = new IdentityUser
             {

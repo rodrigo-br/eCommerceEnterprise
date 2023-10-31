@@ -1,32 +1,43 @@
 ﻿using ECE.WebApp.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace ECE.WebApp.MVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
 
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        [Route("erro/{id:length(3,3)}")]
+        public IActionResult Error(int id) 
         {
-            return View();
-        }
+            var modelError = new ErrorViewModel();
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            switch (id)
+            {
+                case 500:
+                    modelError.Message = "An unexpected error ocurred. Try again later or contact the owner";
+                    modelError.Title = "Error!";
+                    modelError.ErrorCode = id;
+                    break;
+                case 404:
+					modelError.Message = "The page doesn't exist. If you believe it should, contact the owner";
+					modelError.Title = "Page not found";
+					modelError.ErrorCode = id;
+                    break;
+                case 403:
+					modelError.Message = "Not allowed. You have no rights to continue";
+					modelError.Title = "Access denied";
+					modelError.ErrorCode = id;
+					break;
+                default:
+                    return StatusCode(404);
+			}
+
+            return View("Error", modelError);
         }
     }
 }

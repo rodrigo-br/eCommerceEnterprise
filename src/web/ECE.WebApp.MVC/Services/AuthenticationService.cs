@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace ECE.WebApp.MVC.Services
 {
-	public class AuthenticationService : IAuthenticationService
+	public class AuthenticationService : Service, IAuthenticationService
 	{
 		private readonly HttpClient _httpClient;
 
@@ -26,6 +26,14 @@ namespace ECE.WebApp.MVC.Services
 				PropertyNameCaseInsensitive = true,
 			};
 
+			if (!HandleResponseErrors(response))
+			{
+				return new UserResponseLogin
+				{
+					ResponseResult = JsonSerializer.Deserialize<ResponseResult>(await response.Content.ReadAsStringAsync(), options)
+				};
+			}
+
 			return JsonSerializer.Deserialize<UserResponseLogin>(await response.Content.ReadAsStringAsync(), options);
 		}
 
@@ -37,7 +45,20 @@ namespace ECE.WebApp.MVC.Services
 				"application/json");
 			var response = await _httpClient.PostAsync("https://localhost:44305/api/auth/new-account", registerContent);
 
-			return JsonSerializer.Deserialize<UserResponseLogin>(await response.Content.ReadAsStringAsync());
+			var options = new JsonSerializerOptions
+			{
+				PropertyNameCaseInsensitive = true,
+			};
+
+			if (!HandleResponseErrors(response))
+			{
+				return new UserResponseLogin
+				{
+					ResponseResult = JsonSerializer.Deserialize<ResponseResult>(await response.Content.ReadAsStringAsync(), options)
+				};
+			}
+
+			return JsonSerializer.Deserialize<UserResponseLogin>(await response.Content.ReadAsStringAsync(), options);
 		}
 	}
 }
