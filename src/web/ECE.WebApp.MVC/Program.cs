@@ -2,7 +2,12 @@ using ECE.WebApp.MVC.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddWebAppConfiguration();
+builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
+	.AddJsonFile("appsettings.json", true, true)
+	.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
+	.AddEnvironmentVariables();
+
+builder.Services.AddWebAppConfiguration(builder.Configuration);
 builder.Services.AddIdentityConfiguration();
 builder.Services.RegisterServices();
 

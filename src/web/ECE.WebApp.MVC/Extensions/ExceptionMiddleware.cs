@@ -27,7 +27,7 @@ namespace ECE.WebApp.MVC.Extensions
 		{
 			if (httpResponseException.StatusCode == HttpStatusCode.Unauthorized)
 			{
-				httpContext.Response.Redirect("/login");
+				httpContext.Response.Redirect($"/login?ReturnUrl={httpContext.Request.Path}");
 				return;
 			}
 

@@ -4,9 +4,11 @@ namespace ECE.WebApp.MVC.Configuration
 {
     public static class WebAppConfig
     {
-        public static void AddWebAppConfiguration(this IServiceCollection services)
+        public static void AddWebAppConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllersWithViews();
+
+            services.Configure<AppSettings>(configuration);
         }
 
         public static void UseWebAppConfiguration(this IApplicationBuilder app, IWebHostEnvironment env)
