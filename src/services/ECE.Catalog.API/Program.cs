@@ -1,32 +1,19 @@
-using ECE.Catalog.API.Data;
-using ECE.Catalog.API.Data.Repository;
-using ECE.Catalog.API.Models;
-using ECE.Core.Data;
-using Microsoft.EntityFrameworkCore;
+using ECE.Catalog.API.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<CatalogContext>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", true, true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
+    .AddEnvironmentVariables();
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<CatalogContext>();
+builder.Services.AddApiConfiguration(builder.Configuration);
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
+app.UseApiConfiguration(app.Environment);
 
 app.MapControllers();
 
