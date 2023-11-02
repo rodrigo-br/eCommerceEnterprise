@@ -1,4 +1,6 @@
-﻿namespace ECE.Identity.API.Configuration
+﻿using ECE.WebApi.Core.Identity;
+
+namespace ECE.Identity.API.Configuration
 {
     public static class ApiConfig
     {
@@ -20,7 +22,7 @@
 
             app.UseRouting();
 
-            app.UseIdentityConfiguration();
+            app.UseJwtConfiguration();
 
             return app;
         }

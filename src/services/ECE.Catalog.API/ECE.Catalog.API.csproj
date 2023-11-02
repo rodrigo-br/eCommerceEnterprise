@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\buildingBlocks\ECE.Core\ECE.Core.csproj" />
+    <ProjectReference Include="..\..\buildingBlocks\ECE.WebApi.Core\ECE.WebApi.Core.csproj" />
   </ItemGroup>
 
 </Project>

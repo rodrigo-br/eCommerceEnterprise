@@ -1,5 +1,4 @@
-﻿using ECE.Identity.API.Extensions;
-using ECE.Identity.API.Models;
+﻿using ECE.Identity.API.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -7,6 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using ECE.WebApi.Core.Identity;
 
 namespace ECE.Identity.API.Controllers
 {

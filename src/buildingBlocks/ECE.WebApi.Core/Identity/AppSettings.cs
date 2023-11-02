@@ -1,4 +1,4 @@
-﻿namespace ECE.Identity.API.Extensions
+﻿namespace ECE.WebApi.Core.Identity
 {
     public class AppSettings
     {

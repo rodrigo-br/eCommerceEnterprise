@@ -1,4 +1,5 @@
 ﻿using ECE.Catalog.API.Data;
+using ECE.WebApi.Core.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECE.Catalog.API.Configuration
@@ -13,6 +14,8 @@ namespace ECE.Catalog.API.Configuration
             services.RegisterServices();
 
             services.AddControllers();
+
+            services.AddJwtConfiguration(configuration);
 
             services.AddCors(options =>
             {
@@ -38,8 +41,7 @@ namespace ECE.Catalog.API.Configuration
             app.UseRouting();
             app.UseCors("Total");
             app.UseSwaggerConfiguration(env);
-
-            app.UseAuthorization();
+            app.UseJwtConfiguration();
         }
     }
 }
