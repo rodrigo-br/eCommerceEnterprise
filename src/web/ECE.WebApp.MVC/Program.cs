@@ -17,6 +17,6 @@ app.UseWebAppConfiguration(app.Environment);
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Catalog}/{action=Index}/{id?}");
 
 app.Run();

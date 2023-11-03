@@ -9,6 +9,8 @@ namespace ECE.WebApp.MVC.Configuration
 		{
 			services.AddHttpClient<IAuthenticationService, AuthenticationService>();
 
+			services.AddHttpClient<ICatalogService, CatalogService>();
+
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 			services.AddScoped<IUser, AspNetUser>();
