@@ -9,7 +9,7 @@ builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
 
 builder.Services.AddWebAppConfiguration(builder.Configuration);
 builder.Services.AddIdentityConfiguration();
-builder.Services.RegisterServices();
+builder.Services.RegisterServices(builder.Configuration);
 
 var app = builder.Build();
 

@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using Polly.CircuitBreaker;
+using Refit;
+using System.Net;
 
 namespace ECE.WebApp.MVC.Extensions
 {
@@ -17,21 +19,33 @@ namespace ECE.WebApp.MVC.Extensions
 			{
 				await _requestDelegate(httpContext);
 			}
-			catch (CustomHttpResponseException ex)
-			{ 
-				HandleResponseExceptionAsync(httpContext, ex);
+            catch (Exception ex)
+			when (ex is CustomHttpResponseException ||
+					ex is ValidationApiException || 
+					ex is ApiException)
+            {
+                HandleResponseExceptionAsync(httpContext, ((dynamic)ex).StatusCode);
+            }
+			catch(BrokenCircuitException ex)
+			{
+				HandleCircuitBreakerExceptionAsync(httpContext);
 			}
-		}
+        }
 
-		private static void HandleResponseExceptionAsync(HttpContext httpContext, CustomHttpResponseException httpResponseException)
+		private static void HandleResponseExceptionAsync(HttpContext httpContext, HttpStatusCode statusCode)
 		{
-			if (httpResponseException.StatusCode == HttpStatusCode.Unauthorized)
+			if (statusCode == HttpStatusCode.Unauthorized)
 			{
 				httpContext.Response.Redirect($"/login?ReturnUrl={httpContext.Request.Path}");
 				return;
 			}
 
-			httpContext.Response.StatusCode = (int)httpResponseException.StatusCode;
+			httpContext.Response.StatusCode = (int)statusCode;
+		}
+
+		private static void HandleCircuitBreakerExceptionAsync(HttpContext context)
+		{
+			context.Response.Redirect("/system-out");
 		}
 	}
 }

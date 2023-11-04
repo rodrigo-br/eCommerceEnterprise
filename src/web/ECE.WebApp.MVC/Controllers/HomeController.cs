@@ -5,6 +5,18 @@ namespace ECE.WebApp.MVC.Controllers
 {
     public class HomeController : Controller
     {
+        [Route("system-out")]
+        public IActionResult SystemOut()
+        {
+            var modelError = new ErrorViewModel
+            {
+                Message = "The system is temporary off. This may be due to users overload",
+                Title = "System out",
+                ErrorCode = 500
+            };
+
+            return View("Error", modelError);
+        }
 
         public IActionResult Index()
         {
