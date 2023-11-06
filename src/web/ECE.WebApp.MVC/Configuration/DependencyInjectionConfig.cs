@@ -1,6 +1,7 @@
 ﻿using ECE.WebApp.MVC.Extensions;
 using ECE.WebApp.MVC.Services;
 using ECE.WebApp.MVC.Services.Handlers;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Polly;
 
 namespace ECE.WebApp.MVC.Configuration
@@ -9,6 +10,7 @@ namespace ECE.WebApp.MVC.Configuration
 	{
 		public static void RegisterServices(this IServiceCollection services, IConfiguration configuration)
 		{
+			services.AddSingleton<IValidationAttributeAdapterProvider, CpfValidationAttributeAdapterProvider>();
 			services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
 
 			services.AddHttpClient<IAuthenticationService, AuthenticationService>();

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using ECE.Customer.API.Models;
 using ECE.Core.Mediator;
 using ECE.Core.DomainObjects;
+using ECE.Core.Messages;
+using FluentValidation.Results;
 
 namespace ECE.Customer.API.Data
 {
@@ -23,6 +25,9 @@ namespace ECE.Customer.API.Data
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.Ignore<ValidationResult>();
+			modelBuilder.Ignore<Event>();
+
 			foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(e =>
 				e.GetProperties().Where(p => p.ClrType == typeof(string))))
 			{

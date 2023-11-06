@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
 using ECE.WebApi.Core.Identity;
+using ECE.WebApi.Core.Controllers;
 
 namespace ECE.Identity.API.Controllers
 {

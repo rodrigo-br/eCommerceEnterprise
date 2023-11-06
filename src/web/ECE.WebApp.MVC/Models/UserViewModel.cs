@@ -1,18 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ECE.WebApp.MVC.Extensions;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECE.WebApp.MVC.Models
 {
     public class UserRegister
     {
         [Required(ErrorMessage = "The field {0} is mandatory")]
+        [DisplayName("Nome Completo")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "The field {0} is mandatory")]
+        [DisplayName("CPF")]
+        [Cpf]
+        public string Cpf { get; set; }
+
+        [Required(ErrorMessage = "The field {0} is mandatory")]
         [EmailAddress(ErrorMessage = "The field {0} format is invalid")]
+        [DisplayName("E-mail")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "The field {0} is mandatory")]
         [StringLength(100, ErrorMessage = "The field {0} need between {2} and {1} characteres", MinimumLength = 6)]
+        [DisplayName("Senha")]
         public string Password { get; set; }
 
         [Compare("Password", ErrorMessage = "Passwords doesn't match")]
+        [DisplayName("Confirme a senha")]
         public string ConfirmPassword { get; set; }
     }
 

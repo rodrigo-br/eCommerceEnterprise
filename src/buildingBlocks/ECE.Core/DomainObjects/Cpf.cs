@@ -12,7 +12,7 @@ namespace ECE.Core.DomainObjects
 		public Cpf(string number)
 		{
 			if (!Validate(number)) throw new DomainException("Invalid CPF");
-			Number = number;
+			Number = number.DigitFilter();
 		}
 
 		public static bool Validate(string cpf)
