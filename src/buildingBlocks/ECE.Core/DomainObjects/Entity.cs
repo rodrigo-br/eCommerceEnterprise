@@ -1,8 +1,34 @@
-﻿namespace ECE.Core.DomainObjects
+﻿using ECE.Core.Messages;
+
+namespace ECE.Core.DomainObjects
 {
     public abstract class Entity
     {
         public Guid Id { get; set; }
+
+        protected Entity()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        private List<Event> _notifications;
+        public IReadOnlyCollection<Event> Notifications => _notifications?.AsReadOnly();
+
+        public void AddEvent(Event newEvent)
+        {
+            _notifications = _notifications ?? new List<Event>();
+            _notifications.Add(newEvent);
+        }
+
+        public void RemoveEvent(Event eventItem)
+        {
+            _notifications?.Remove(eventItem);
+        }
+
+        public void ClearEvents()
+        {
+            _notifications?.Clear();
+        }
 
         public override bool Equals(object? obj)
         {

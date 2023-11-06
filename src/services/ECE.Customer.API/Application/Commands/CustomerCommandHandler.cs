@@ -1,4 +1,5 @@
 ﻿using ECE.Core.Messages;
+using ECE.Customer.API.Application.Events;
 using ECE.Customer.API.Models;
 using FluentValidation.Results;
 using MediatR;
@@ -30,6 +31,8 @@ namespace ECE.Customer.API.Application.Commands
 			}
 
 			_customerRepository.Add(customer);
+
+			customer.AddEvent(new RegisteredCustomerEvent(message.Id, message.Name, message.Email, message.Cpf));
 
 			return await PersistData(_customerRepository.UnitOfWork);
 		}
