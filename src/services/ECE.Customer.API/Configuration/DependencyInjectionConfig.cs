@@ -4,6 +4,7 @@ using ECE.Customer.API.Application.Events;
 using ECE.Customer.API.Data;
 using ECE.Customer.API.Data.Repository;
 using ECE.Customer.API.Models;
+using ECE.Customer.API.Services;
 using FluentValidation.Results;
 using MediatR;
 
@@ -19,6 +20,8 @@ namespace ECE.Customer.API.Configuration
 			services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 			services.AddScoped<CustomerContext>();
+
+			services.AddHostedService<RegisterCustomerIntegrationHandler>();
 		}
 	}
 }
