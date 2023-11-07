@@ -5,6 +5,12 @@ namespace ECE.Identity.API.Models
 	public class UserRegister
 	{
         [Required(ErrorMessage = "The field {0} is mandatory")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "The field {0} is mandatory")]
+        public string Cpf { get; set; }
+
+        [Required(ErrorMessage = "The field {0} is mandatory")]
         [EmailAddress(ErrorMessage = "The field {0} format is invalid")]
         public string Email { get; set; }
 

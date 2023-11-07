@@ -8,6 +8,8 @@ using System.Security.Claims;
 using System.Text;
 using ECE.WebApi.Core.Identity;
 using ECE.WebApi.Core.Controllers;
+using ECE.Core.Messages.Integration;
+using EasyNetQ;
 
 namespace ECE.Identity.API.Controllers
 {
@@ -17,15 +19,18 @@ namespace ECE.Identity.API.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
+        private IBus _bus;
 
         public AuthController(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings,
+            IBus bus)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appSettings = appSettings.Value;
+            _bus = bus;
         }
 
         [HttpPost("new-account")]
@@ -43,6 +48,8 @@ namespace ECE.Identity.API.Controllers
 
             if (result.Succeeded)
             {
+                var success = await RegisterCustomer(userRegister);
+
                 return CustomResponse(await GenerateJwt(userRegister.Email));
             }
 
@@ -52,6 +59,20 @@ namespace ECE.Identity.API.Controllers
             }
 
             return CustomResponse();
+        }
+
+        private async Task<ResponseMessage> RegisterCustomer(UserRegister userRegister)
+        {
+            var user = await _userManager.FindByEmailAsync(userRegister.Email);
+
+            var userRegistered = new RegisteredCustomerIntegrationEvent(
+                Guid.Parse(user.Id), userRegister.Name, userRegister.Email, userRegister.Cpf);
+
+            _bus = RabbitHutch.CreateBus("host=localhost:5672");
+
+            var success = await _bus.Rpc.RequestAsync<RegisteredCustomerIntegrationEvent, ResponseMessage>(userRegistered);
+
+            return success;
         }
 
         [HttpPost("login")]
