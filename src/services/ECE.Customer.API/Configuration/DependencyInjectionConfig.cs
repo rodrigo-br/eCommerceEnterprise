@@ -20,8 +20,6 @@ namespace ECE.Customer.API.Configuration
 			services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 			services.AddScoped<CustomerContext>();
-
-			services.AddHostedService<RegisterCustomerIntegrationHandler>();
 		}
 	}
 }

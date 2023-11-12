@@ -12,6 +12,7 @@ builder.Services.AddApiConfiguration(builder.Configuration);
 builder.Services.AddMediatR(config =>
 	config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.RegisterServices();
+builder.Services.AddMessageBusConfiguration(builder.Configuration);
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
