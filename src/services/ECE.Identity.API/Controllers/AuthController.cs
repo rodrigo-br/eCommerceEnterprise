@@ -9,7 +9,7 @@ using System.Text;
 using ECE.WebApi.Core.Identity;
 using ECE.WebApi.Core.Controllers;
 using ECE.Core.Messages.Integration;
-using EasyNetQ;
+using ECE.MessageBus;
 
 namespace ECE.Identity.API.Controllers
 {
@@ -19,16 +19,18 @@ namespace ECE.Identity.API.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly AppSettings _appSettings;
-        private IBus _bus;
+        private readonly IMessageBus _bus;
 
         public AuthController(
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings,
+            IMessageBus bus)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appSettings = appSettings.Value;
+            _bus = bus;
         }
 
         [HttpPost("new-account")]
@@ -39,14 +41,20 @@ namespace ECE.Identity.API.Controllers
             var user = new IdentityUser
             {
                 UserName = userRegister.Email,
-                Email = userRegister.Email,
+                Email = userRegister.Email
             };
 
             var result = await _userManager.CreateAsync(user, userRegister.Password);
 
             if (result.Succeeded)
             {
-                var success = await RegisterCustomer(userRegister);
+                var customerResult = await RegisterCustomer(userRegister);
+
+                if (!customerResult.ValidationResult.IsValid)
+                {
+                    await _userManager.DeleteAsync(user);
+                    return CustomResponse(customerResult.ValidationResult);
+                }
 
                 return CustomResponse(await GenerateJwt(userRegister.Email));
             }
@@ -57,20 +65,6 @@ namespace ECE.Identity.API.Controllers
             }
 
             return CustomResponse();
-        }
-
-        private async Task<ResponseMessage> RegisterCustomer(UserRegister userRegister)
-        {
-            var user = await _userManager.FindByEmailAsync(userRegister.Email);
-
-            var userRegistered = new RegisteredCustomerIntegrationEvent(
-                Guid.Parse(user.Id), userRegister.Name, userRegister.Email, userRegister.Cpf);
-
-            _bus = RabbitHutch.CreateBus("host=localhost:5672");
-
-            var success = await _bus.Rpc.RequestAsync<RegisteredCustomerIntegrationEvent, ResponseMessage>(userRegistered);
-
-            return success;
         }
 
         [HttpPost("login")]
@@ -165,5 +159,23 @@ namespace ECE.Identity.API.Controllers
 
         private static long ToUnixEpochDate(DateTime date) =>
             (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
+
+        private async Task<ResponseMessage> RegisterCustomer(UserRegister userRegister)
+        {
+            var user = await _userManager.FindByEmailAsync(userRegister.Email);
+
+            var userRegistered = new RegisteredCustomerIntegrationEvent(
+                Guid.Parse(user.Id), userRegister.Name, userRegister.Email, userRegister.Cpf);
+
+            try
+            {
+                return await _bus.RequestAsync<RegisteredCustomerIntegrationEvent, ResponseMessage>(userRegistered);
+            }
+            catch
+            {
+                await _userManager.DeleteAsync(user);
+                throw;
+            }
+        }
     }
 }

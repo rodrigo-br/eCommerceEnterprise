@@ -1,4 +1,5 @@
-﻿using EasyNetQ.Internals;
+﻿using EasyNetQ;
+using EasyNetQ.Internals;
 using ECE.Core.Messages.Integration;
 
 namespace ECE.MessageBus
@@ -6,6 +7,7 @@ namespace ECE.MessageBus
     public interface IMessageBus : IDisposable 
     {
         bool IsConnected { get; }
+        public IAdvancedBus AdvancedBus { get; }
 
         void Publish<T>(T message) where T : IntegrationEvent;
 
