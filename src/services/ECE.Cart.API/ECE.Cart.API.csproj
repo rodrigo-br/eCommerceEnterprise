@@ -27,4 +27,8 @@
     <ProjectReference Include="..\..\buildingBlocks\ECE.WebApi.Core\ECE.WebApi.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
-﻿using ECE.WebApp.MVC.Extensions;
+﻿using ECE.WebApi.Core.User;
+using ECE.WebApp.MVC.Extensions;
 using ECE.WebApp.MVC.Services;
 using ECE.WebApp.MVC.Services.Handlers;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
@@ -28,7 +29,7 @@ namespace ECE.WebApp.MVC.Configuration
 
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-			services.AddScoped<IUser, AspNetUser>();
+			services.AddScoped<IAspNetUser, AspNetUser>();
 		}
 	}
 }

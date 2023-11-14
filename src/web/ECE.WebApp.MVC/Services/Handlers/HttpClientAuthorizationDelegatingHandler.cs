@@ -1,13 +1,13 @@
-﻿using ECE.WebApp.MVC.Extensions;
+﻿using ECE.WebApi.Core.User;
 using System.Net.Http.Headers;
 
 namespace ECE.WebApp.MVC.Services.Handlers
 {
     public class HttpClientAuthorizationDelegatingHandler : DelegatingHandler
     {
-        private readonly IUser _user;
+        private readonly IAspNetUser _user;
 
-        public HttpClientAuthorizationDelegatingHandler(IUser user)
+        public HttpClientAuthorizationDelegatingHandler(IAspNetUser user)
         {
             _user = user;
         }
