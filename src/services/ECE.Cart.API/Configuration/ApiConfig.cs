@@ -1,4 +1,6 @@
-﻿using ECE.WebApi.Core.Identity;
+﻿using ECE.Cart.API.Data;
+using ECE.WebApi.Core.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECE.Cart.API.Configuration
 {
@@ -6,6 +8,9 @@ namespace ECE.Cart.API.Configuration
     {
         public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddDbContext<CartContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
             services.AddControllers();
             services.AddEndpointsApiExplorer();
 

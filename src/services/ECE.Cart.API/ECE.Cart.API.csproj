@@ -27,9 +27,4 @@
     <ProjectReference Include="..\..\buildingBlocks\ECE.WebApi.Core\ECE.WebApi.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>
