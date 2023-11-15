@@ -35,6 +35,11 @@ namespace ECE.Cart.API.Models
             ProductAmount += amount;
         }
 
+        internal void UpdateProductAmount(int amount)
+        {
+            ProductAmount = amount;
+        }
+
         internal bool IsValid()
         {
             return new OrderedProductValidation().Validate(this).IsValid;
@@ -54,15 +59,15 @@ namespace ECE.Cart.API.Models
 
                 RuleFor(c => c.ProductAmount)
                     .GreaterThan(0)
-                    .WithMessage("The minimum product amount is 1");
+                    .WithMessage(product => $"The minimum {product.ProductName} amount is 1");
 
                 RuleFor(c => c.ProductAmount)
                     .LessThan(CustomerCart.MAX_PRODUCT_AMOUNT)
-                    .WithMessage($"The maximum product amount is {CustomerCart.MAX_PRODUCT_AMOUNT}");
+                    .WithMessage(product => $"The maximum {product.ProductName} amount is {CustomerCart.MAX_PRODUCT_AMOUNT}");
 
                 RuleFor(c => c.ProductValue)
                     .GreaterThan(0)
-                    .WithMessage("The product value must be greater than 0");
+                    .WithMessage(product => $"The {product.ProductName} value must be greater than 0");
             }
         }
 

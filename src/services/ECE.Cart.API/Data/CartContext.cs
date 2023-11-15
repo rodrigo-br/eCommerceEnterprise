@@ -1,5 +1,6 @@
 ﻿using ECE.Cart.API.Models;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace ECE.Cart.API.Data
 {
@@ -16,6 +17,8 @@ namespace ECE.Cart.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Ignore<ValidationResult>();
+
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(e =>
                 e.GetProperties().Where(p => p.ClrType == typeof(string))))
             {

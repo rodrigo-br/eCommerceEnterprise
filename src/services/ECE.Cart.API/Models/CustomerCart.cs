@@ -1,4 +1,7 @@
-﻿namespace ECE.Cart.API.Models
+﻿using FluentValidation;
+using FluentValidation.Results;
+
+namespace ECE.Cart.API.Models
 {
     public class CustomerCart
     {
@@ -8,6 +11,7 @@
         public Guid CustomerId { get; set; }
         public decimal TotalValue { get; set; }
         public List<ProductCart> Products { get; set; } = new List<ProductCart>();
+        public ValidationResult ValidationResult { get; set; }
 
         public CustomerCart() { }
 
@@ -34,8 +38,6 @@
 
         internal void AddProduct(ProductCart product)
         {
-            if (!product.IsValid()) return;
-
             product.LinkCart(Id);
 
             if (ExistingProductCart(product))
@@ -49,6 +51,62 @@
 
             Products.Add(product);
             ComputeTotalCartValue();
+        }
+
+        internal void UpdateProduct(ProductCart product)
+        {
+            product.LinkCart(Id);
+
+            var existingProduct = GetProductById(product.ProductId);
+
+            Products.Remove(existingProduct);
+            Products.Add(product);
+
+            ComputeTotalCartValue();
+        }
+
+        internal void UpdateAmount(ProductCart product, int amount)
+        {
+            product.UpdateProductAmount(amount);
+            UpdateProduct(product);
+        }
+
+        internal void DeleteProduct(ProductCart product)
+        {
+            var existingProduct = GetProductById(product.ProductId);
+            Products.Remove(existingProduct);
+
+            ComputeTotalCartValue();
+        }
+
+        internal bool IsValid()
+        {
+            var errors = Products.SelectMany(p => 
+                new ProductCart.OrderedProductValidation()
+                    .Validate(p).Errors).ToList();
+            errors.AddRange(new CustomerCartValidation().Validate(this).Errors);
+
+            ValidationResult = new ValidationResult(errors);
+
+            return ValidationResult.IsValid;
+        }
+
+        public class CustomerCartValidation : AbstractValidator<CustomerCart>
+        {
+            public CustomerCartValidation()
+            {
+                RuleFor(c => c.CustomerId)
+                    .NotEqual(Guid.Empty)
+                    .WithMessage("Customer not recognized");
+
+                RuleFor(c => c.Products.Count)
+                    .GreaterThan(0)
+                    .WithMessage("The cart is empty");
+
+                RuleFor(c => c.TotalValue)
+                    .GreaterThan(0)
+                    .WithMessage("The total value must be greater than 0");
+            }
         }
 
     }
