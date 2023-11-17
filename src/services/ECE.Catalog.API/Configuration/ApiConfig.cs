@@ -12,9 +12,7 @@ namespace ECE.Catalog.API.Configuration
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.RegisterServices();
-
             services.AddControllers();
-
             services.AddJwtConfiguration(configuration);
 
             services.AddCors(options =>

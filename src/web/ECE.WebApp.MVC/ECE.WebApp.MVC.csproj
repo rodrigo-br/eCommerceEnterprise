@@ -21,4 +21,8 @@
     <ProjectReference Include="..\..\buildingBlocks\ECE.WebApi.Core\ECE.WebApi.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Shared\Components\Cart\" />
+  </ItemGroup>
+
 </Project>

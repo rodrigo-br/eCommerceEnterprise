@@ -27,5 +27,29 @@ namespace ECE.WebApp.MVC.Extensions
             }
             return sb.ToString();
         }
+
+        public static string PiecesByProduct(this RazorPage page, int amount)
+        {
+            return amount > 1 ? $"{amount} pieces" : $"{amount} piece";
+        }
+
+        public static string SelectOptionsByAmount(this RazorPage page, int amount, int selectedValue = 0)
+        {
+            var sb = new StringBuilder();
+
+            for (var i = 1; i <= amount; i++)
+            {
+                var selected = "";
+
+                if (i == selectedValue)
+                {
+                    selected = "selected";
+                }
+
+                sb.Append($"<option {selected} value='{i}'>{i}</option>");
+            }
+
+            return sb.ToString();
+        }
     }
 }
