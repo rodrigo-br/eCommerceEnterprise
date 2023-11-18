@@ -10,7 +10,10 @@ namespace ECE.Cart.API.Data
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
-        }
+            ProductsCart = Set<ProductCart>();
+            CustomerCart = Set<CustomerCart>();
+
+		}
 
         public DbSet<ProductCart> ProductsCart { get; set; }
         public DbSet<CustomerCart> CustomerCart { get; set; }

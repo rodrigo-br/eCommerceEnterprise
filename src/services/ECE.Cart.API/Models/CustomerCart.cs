@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECE.Cart.API.Models
 {
@@ -11,7 +12,8 @@ namespace ECE.Cart.API.Models
         public Guid CustomerId { get; set; }
         public decimal TotalValue { get; set; }
         public List<ProductCart> Products { get; set; } = new List<ProductCart>();
-        public ValidationResult ValidationResult { get; set; }
+        [NotMapped]
+        public ValidationResult? ValidationResult { get; set; }
 
         public CustomerCart() { }
 

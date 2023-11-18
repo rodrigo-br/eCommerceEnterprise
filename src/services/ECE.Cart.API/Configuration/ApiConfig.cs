@@ -11,9 +11,7 @@ namespace ECE.Cart.API.Configuration
             services.AddDbContext<CartContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            services.RegisterServices();
             services.AddControllers();
-            services.AddJwtConfiguration(configuration);
 
             services.AddCors(options =>
             {
@@ -22,23 +20,18 @@ namespace ECE.Cart.API.Configuration
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerConfiguration();
         }
 
         public static void UseApiConfiguration(this IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
                 app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors("Total");
-            app.UseSwaggerConfiguration(env);
             app.UseJwtConfiguration();
         }
     }

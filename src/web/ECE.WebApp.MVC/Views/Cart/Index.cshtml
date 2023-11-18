@@ -51,13 +51,13 @@
                                                         <small class="text-muted"> @this.FormatCurrency(item.ProductValue) cada</small>
                                                     </div>
                                                 </td>
-                                                <form method="post" asp-controller="Cart" asp-action="AtualizarItemCart">
+                                                <form method="post" asp-controller="Cart" asp-action="UpdateProductCart">
                                                 <td>
 
-                                                    <input type="hidden" id="ProdutoId" name="ProdutoId" value="@item.ProductId" />
+                                                    <input type="hidden" id="ProductId" name="ProductId" value="@item.ProductId" />
 
                                                     <div class="text-left">
-                                                        <select id="Quantidade" name="Quantidade" style="width: 80px" class="form-control">
+                                                        <select id="ProductAmount" name="ProductAmount" style="width: 80px" class="form-control">
                                                                 @{
                                                                     @Html.Raw(this.SelectOptionsByAmount(5, item.ProductAmount))
                                                                 }
@@ -78,7 +78,7 @@
                                                     <form method="post" asp-controller="Cart" asp-action="DeleteProductCart">
                                                         <div>
 
-                                                            <input type="hidden" id="ProdutoId" name="ProdutoId" value="@item.ProductId" />
+                                                            <input type="hidden" id="ProductId" name="ProductId" value="@item.ProductId" />
 
                                                             <button type="submit" class="btn btn-danger">
                                                                 <i class="fas fa-trash-alt"></i>

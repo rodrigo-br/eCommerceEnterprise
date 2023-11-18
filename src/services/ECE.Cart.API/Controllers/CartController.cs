@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECE.Cart.API.Controllers
 {
-    [Authorize]
+	[Route("api/[controller]")]
+	[ApiController]
+	[Authorize]
     public class CartController : MainController
     {
         private readonly IAspNetUser _aspNetUser;
@@ -20,13 +22,13 @@ namespace ECE.Cart.API.Controllers
             _context = context;
         }
 
-        [HttpGet("cart")]
+        [HttpGet]
         public async Task<CustomerCart> GetCart()
         {
             return await GetCustomerCart() ?? new CustomerCart();
         }
 
-        [HttpPost("cart")]
+        [HttpPost]
         public async Task<IActionResult> AddProductCart(ProductCart product)
         {
             var cart = await GetCustomerCart();
@@ -40,7 +42,6 @@ namespace ECE.Cart.API.Controllers
                 HandleExistingCart(cart, product);
             }
 
-            ValidateCart(cart);
             if (!ValidOperation()) return CustomResponse();
 
             await SaveChanges();
@@ -52,8 +53,9 @@ namespace ECE.Cart.API.Controllers
             var cart = new CustomerCart(_aspNetUser.GetUserId());
 
             cart.AddProduct(product);
+			ValidateCart(cart);
 
-            _context.CustomerCart.Add(cart);
+			_context.CustomerCart.Add(cart);
         }
 
         private void HandleExistingCart(CustomerCart cart, ProductCart product) 
@@ -61,8 +63,9 @@ namespace ECE.Cart.API.Controllers
             var existingProduct = cart.ExistingProductCart(product);
 
             cart.AddProduct(product);
+			ValidateCart(cart);
 
-            if (existingProduct)
+			if (existingProduct)
             {
                 _context.ProductsCart.Update(cart.GetProductById(product.Id));
             }
@@ -74,7 +77,7 @@ namespace ECE.Cart.API.Controllers
             _context.CustomerCart.Update(cart);
         }
 
-        [HttpGet("cart/{productId}")]
+        [HttpGet("{productId}")]
         public async Task<IActionResult> UpdateProductCart(Guid productId, ProductCart productCart)
         {
             var cart = await GetCustomerCart();
@@ -87,7 +90,6 @@ namespace ECE.Cart.API.Controllers
 
             cart.UpdateAmount(validatedProductCart, productCart.ProductAmount);
 
-            ValidateCart(cart);
             if (!ValidOperation()) return CustomResponse();
 
             _context.ProductsCart.Update(validatedProductCart);
@@ -106,7 +108,7 @@ namespace ECE.Cart.API.Controllers
             }
         }
 
-        [HttpDelete("cart/{productId}")]
+        [HttpDelete("{productId}")]
         public async Task<IActionResult> DeleteProductCart(Guid productId)
         {
             var cart = await GetCustomerCart();

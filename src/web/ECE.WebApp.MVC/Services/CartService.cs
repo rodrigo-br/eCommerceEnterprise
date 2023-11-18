@@ -17,7 +17,7 @@ namespace ECE.WebApp.MVC.Services
 
         public async Task<CustomerCartViewModel> GetCart()
         {
-            var response = await _httpClient.GetAsync("cart");
+            var response = await _httpClient.GetAsync("/api/cart");
 
             HandleResponseErrors(response);
 
@@ -28,7 +28,7 @@ namespace ECE.WebApp.MVC.Services
         {
             var productContent = SerializeToStringContent(product);
 
-            var response = await _httpClient.PostAsync("/cart/", productContent);
+            var response = await _httpClient.PostAsync("/api/cart/", productContent);
 
             if (!HandleResponseErrors(response))
             {
@@ -42,7 +42,7 @@ namespace ECE.WebApp.MVC.Services
         {
             var productContent = SerializeToStringContent(product);
 
-            var response = await _httpClient.PutAsync($"/cart/{product.ProductId}", productContent);
+            var response = await _httpClient.PutAsync($"/api/cart/{product.ProductId}", productContent);
 
             if (!HandleResponseErrors(response))
             {
@@ -54,7 +54,7 @@ namespace ECE.WebApp.MVC.Services
 
         public async Task<ResponseResult> DeleteProductCart(Guid productId)
         {
-            var response = await _httpClient.DeleteAsync($"/cart/{productId}");
+            var response = await _httpClient.DeleteAsync($"/api/cart/{productId}");
 
             if (!HandleResponseErrors(response))
             {

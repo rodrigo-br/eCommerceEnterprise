@@ -16,14 +16,14 @@ namespace ECE.WebApp.MVC.Services.Handlers
         {
             var authorizationHeader = _user.GetHttpContext().Request.Headers["Authorization"];
 
-            if (!string.IsNullOrEmpty(authorizationHeader))
+            if (!string.IsNullOrWhiteSpace(authorizationHeader))
             {
                 request.Headers.Add("Authorization", new List<string>() { authorizationHeader } );
             }
 
             var token = _user.GetUserToken();
 
-            if (token != null)
+            if (token is not null)
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }

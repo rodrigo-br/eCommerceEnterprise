@@ -25,7 +25,6 @@ namespace ECE.Catalog.API.Controllers
             return await _productRepository.GetAllAsync();
         }
 
-        [ClaimsAuthorize("Catalog", "Read")]
         [HttpGet("products/{id}")]
         public async Task<Product> ProductDetail(Guid id)
         {

@@ -1,18 +1,18 @@
 using ECE.Cart.API.Configuration;
+using ECE.WebApi.Core.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json", true, true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", true, true)
-    .AddEnvironmentVariables();
-
 // Add services to the container.
 builder.Services.AddApiConfiguration(builder.Configuration);
+builder.Services.AddJwtConfiguration(builder.Configuration);
+builder.Services.AddSwaggerConfiguration();
+builder.Services.RegisterServices();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseSwaggerConfiguration(app.Environment);
 app.UseApiConfiguration(app.Environment);
 
 app.MapControllers();

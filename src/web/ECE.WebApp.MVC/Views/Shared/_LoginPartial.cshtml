@@ -1,9 +1,13 @@
 ﻿@using ECE.WebApi.Core.User
+@using Microsoft.AspNetCore.Identity
 @using ECE.WebApp.MVC.Extensions
 @inject IAspNetUser AppUser
 
 @if (AppUser.IsAuthenticated())
 {
+	<div>
+		<vc:cart />
+	</div>
 	<div>
 		<div class="dropdown d-inline-block">
 			<a href="#" class="icontext dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">

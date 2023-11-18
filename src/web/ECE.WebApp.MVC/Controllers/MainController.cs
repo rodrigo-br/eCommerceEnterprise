@@ -19,5 +19,15 @@ namespace ECE.WebApp.MVC.Controllers
 
 			return false;
 		}
+
+		protected void AddValidationError(string message)
+		{
+			ModelState.AddModelError(string.Empty, message);
+		}
+
+		protected bool IsValidOperation()
+		{
+			return ModelState.ErrorCount == 0;
+		}
 	}
 }

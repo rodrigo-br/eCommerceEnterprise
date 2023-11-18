@@ -3,10 +3,10 @@
     public class ProductCartViewModel
     {
         public Guid ProductId { get; set; }
-        public string ProductName { get; set; }
+        public string? ProductName { get; set; }
         public int ProductAmount { get; set; }
         public decimal ProductValue { get; set; }
-        public string Image { get; set; }
+        public string? Image { get; set; }
     }
 
     public class CustomerCartViewModel

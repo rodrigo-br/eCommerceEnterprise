@@ -11,8 +11,8 @@ namespace ECE.WebApi.Core.User
                 throw new ArgumentNullException(nameof(principal));
             }
 
-            var claim = principal.FindFirst("sub");
-            return claim?.Value;
+            var claim = principal.FindFirst(ClaimTypes.NameIdentifier);
+            return claim?.Value ?? throw new ArgumentNullException(nameof(claim));
         }
 
         public static string GetUserEmail(this ClaimsPrincipal principal)

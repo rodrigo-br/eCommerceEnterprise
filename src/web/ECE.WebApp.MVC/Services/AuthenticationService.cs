@@ -12,7 +12,8 @@ namespace ECE.WebApp.MVC.Services
 									IOptions<AppSettings> appSettings)
 		{
 			_httpClient = httpClient;
-			_httpClient.BaseAddress = new Uri(appSettings.Value.AuthenticationUrl);
+			_httpClient.BaseAddress = new Uri(appSettings.Value.AuthenticationUrl
+				?? throw new ArgumentNullException(nameof(appSettings.Value.AuthenticationUrl)));
 		}
 
 		public async Task<UserResponseLogin> Login(UserLogin userLogin)
