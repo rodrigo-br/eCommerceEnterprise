@@ -10,7 +10,7 @@ namespace ECE.Cart.API.Models
         public string? ProductName { get; set; }
         public int ProductAmount { get; set; }
         public decimal ProductValue { get; set; }
-        public string? ProductImage { get; set; }
+        public string? Image { get; set; }
 
         // Nav
         public Guid CartId { get; set; }

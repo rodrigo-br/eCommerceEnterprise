@@ -18,6 +18,8 @@
                     <form asp-controller="Cart" asp-action="AddProductCart" method="post">
 
                         <input type="hidden" id="ProductId" name="ProductId" value="@Model.Id" />
+                        <input type="hidden" id="Image" name="Image" value="@Model.Image" />
+                        <input type="hidden" id="ProductName" name="ProductName" value="@Model.Name" />
 
                         <h2 class="title">@Model.Name</h2>
 
