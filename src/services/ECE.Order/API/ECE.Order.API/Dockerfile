@@ -7,10 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["src/services/ECE.Order.API/ECE.Order.API.csproj", "src/services/ECE.Order.API/"]
-RUN dotnet restore "src/services/ECE.Order.API/ECE.Order.API.csproj"
+COPY ["src/services/ECE.Order/API/ECE.Order.API/ECE.Order.API.csproj", "src/services/ECE.Order/API/ECE.Order.API/"]
+RUN dotnet restore "src/services/ECE.Order/API/ECE.Order.API/ECE.Order.API.csproj"
 COPY . .
-WORKDIR "/src/src/services/ECE.Order.API"
+WORKDIR "/src/src/services/ECE.Order/API/ECE.Order.API"
 RUN dotnet build "ECE.Order.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
