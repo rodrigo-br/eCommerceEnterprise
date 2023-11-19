@@ -12,7 +12,7 @@ namespace ECE.WebApp.MVC.Services.Handlers
             _user = user;
         }
 
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var authorizationHeader = _user.GetHttpContext().Request.Headers["Authorization"];
 
@@ -28,7 +28,7 @@ namespace ECE.WebApp.MVC.Services.Handlers
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
 
-            return base.SendAsync(request, cancellationToken);
+            return await base.SendAsync(request, cancellationToken);
         }
     }
 }
