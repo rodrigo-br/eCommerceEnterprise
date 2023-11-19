@@ -11,7 +11,7 @@ namespace ECE.ApiGateway.Purchases.Services
         public CatalogService(HttpClient httpClient, IOptions<AppServicesSettings> settings)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri(settings.Value.CartUrl);
+            _httpClient.BaseAddress = new Uri(settings.Value.CatalogUrl);
         }
 
         public async Task<ProductDTO> GetProductById(Guid productId)

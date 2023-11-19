@@ -26,7 +26,7 @@ namespace ECE.WebApp.MVC.Configuration
 				.AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .WaitAndRetry();
 
-            services.AddHttpClient<ICartService, CartService>()
+            services.AddHttpClient<IPurchasesGatewayService, PurchasesGatewayService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .WaitAndRetry();
             //services.AddHttpClient("Refit", options =>

@@ -6,16 +6,16 @@ namespace ECE.WebApp.MVC.Extensions
 {
     public class CartViewComponent : ViewComponent
     {
-        private readonly ICartService _cartService;
+        private readonly IPurchasesGatewayService _purchaseService;
 
-        public CartViewComponent(ICartService cartService)
+        public CartViewComponent(IPurchasesGatewayService purchaseService)
         {
-            _cartService = cartService;
+            _purchaseService = purchaseService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View(await _cartService.GetCart() ?? new CustomerCartViewModel());
+            return View(await _purchaseService.GetCartAmount());
         }
     }
 }

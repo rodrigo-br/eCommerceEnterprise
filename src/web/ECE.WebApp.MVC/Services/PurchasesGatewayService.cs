@@ -5,31 +5,40 @@ using Microsoft.Extensions.Options;
 
 namespace ECE.WebApp.MVC.Services
 {
-    public class CartService : Service, ICartService
+    public class PurchasesGatewayService : Service, IPurchasesGatewayService
     {
         private readonly HttpClient _httpClient;
 
-        public CartService(HttpClient httpClient, IOptions<AppSettings> settings)
+        public PurchasesGatewayService(HttpClient httpClient, IOptions<AppSettings> settings)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri(settings.Value.CartUrl
-                ?? throw new ArgumentNullException(nameof(settings.Value.CartUrl)));
+            _httpClient.BaseAddress = new Uri(settings.Value.PurchasesGatewayUrl
+                ?? throw new ArgumentNullException(nameof(settings.Value.PurchasesGatewayUrl)));
         }
 
         public async Task<CustomerCartViewModel> GetCart()
         {
-            var response = await _httpClient.GetAsync("/api/cart");
+            var response = await _httpClient.GetAsync("/api/purchases/cart");
 
             HandleResponseErrors(response);
 
             return await DeserializeObjectResponse<CustomerCartViewModel>(response);
         }
 
+        public async Task<int> GetCartAmount()
+        {
+            var response = await _httpClient.GetAsync("/api/purchases/cart-amount");
+
+            HandleResponseErrors(response);
+
+            return await DeserializeObjectResponse<int>(response);
+        }
+
         public async Task<ResponseResult> AddProductCart(ProductCartViewModel product)
         {
             var productContent = SerializeToStringContent(product);
 
-            var response = await _httpClient.PostAsync("/api/cart/", productContent);
+            var response = await _httpClient.PostAsync("/api/purchases/cart/add-products", productContent);
 
             if (!HandleResponseErrors(response))
             {
@@ -43,7 +52,7 @@ namespace ECE.WebApp.MVC.Services
         {
             var productContent = SerializeToStringContent(product);
 
-            var response = await _httpClient.PutAsync($"/api/cart/{product.ProductId}", productContent);
+            var response = await _httpClient.PutAsync($"/api/purchases/cart/products/{product.ProductId}", productContent);
 
             if (!HandleResponseErrors(response))
             {
@@ -55,7 +64,7 @@ namespace ECE.WebApp.MVC.Services
 
         public async Task<ResponseResult> DeleteProductCart(Guid productId)
         {
-            var response = await _httpClient.DeleteAsync($"/api/cart/{productId}");
+            var response = await _httpClient.DeleteAsync($"/api/purchases/cart/products/{productId}");
 
             if (!HandleResponseErrors(response))
             {
