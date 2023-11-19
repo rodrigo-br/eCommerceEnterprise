@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation.Results;
+using ECE.Core.Communication;
 
 namespace ECE.WebApi.Core.Controllers
 {
@@ -43,6 +44,12 @@ namespace ECE.WebApi.Core.Controllers
 			return CustomResponse();
 		}
 
+		protected IActionResult CustomResponse(ResponseResult response)
+		{
+			ResponseHasErrors(response);
+			return CustomResponse();
+		}
+
 		protected bool ValidOperation()
 		{
 			return !Errors.Any();
@@ -56,6 +63,17 @@ namespace ECE.WebApi.Core.Controllers
 		protected void CleanProccessError()
 		{
 			Errors.Clear();
+		}
+
+		protected bool ResponseHasErrors(ResponseResult response)
+		{
+			if (response is null || !response.Errors.Messages.Any()) return false;
+
+			foreach (var message in response.Errors.Messages)
+			{
+				AddProccessError(message);
+			}
+			return true;
 		}
 	}
 }

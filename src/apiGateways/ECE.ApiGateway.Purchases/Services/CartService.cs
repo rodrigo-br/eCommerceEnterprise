@@ -26,11 +26,9 @@ namespace ECE.ApiGateway.Purchases.Services
 
         public async Task<int> GetCartAmount()
         {
-            var response = await _httpClient.GetAsync("/api/cart/count");
+            var cart = await GetCart();
 
-            HandleResponseErrors(response);
-
-            return await DeserializeObjectResponse<int>(response);
+            return cart?.Products.Sum(i => i.ProductAmount) ?? 0;
         }
 
         public async Task<ResponseResult> AddProductCart(ProductCartDTO productCart)
@@ -59,7 +57,7 @@ namespace ECE.ApiGateway.Purchases.Services
             return new ResponseResult();
         }
 
-        public async Task<ResponseResult> UpdateProductCart(ProductCartDTO productCart)
+        public async Task<ResponseResult> UpdateProductCart(Guid productId, ProductCartDTO productCart)
         {
             var productContent = SerializeToStringContent(productCart);
 

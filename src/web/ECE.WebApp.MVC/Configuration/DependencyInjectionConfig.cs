@@ -4,6 +4,7 @@ using ECE.WebApp.MVC.Services;
 using ECE.WebApp.MVC.Services.Handlers;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Polly;
+using ECE.WebApi.Core.Extensions;
 
 namespace ECE.WebApp.MVC.Configuration
 {
@@ -19,30 +20,21 @@ namespace ECE.WebApp.MVC.Configuration
 			services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
 
 			services.AddHttpClient<IAuthenticationService, AuthenticationService>()
-                .AddTransientHttpErrorPolicy(p =>
-                    p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)))
-                .AddTransientHttpErrorPolicy(p =>
-                    p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+                .WaitAndRetry();
 
             services.AddHttpClient<ICatalogService, CatalogService>()
 				.AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddTransientHttpErrorPolicy(p =>
-                    p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)))
-                .AddTransientHttpErrorPolicy(p =>
-                    p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+                .WaitAndRetry();
 
             services.AddHttpClient<ICartService, CartService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
-                .AddTransientHttpErrorPolicy(p =>
-                    p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)))
-                .AddTransientHttpErrorPolicy(p =>
-                    p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+                .WaitAndRetry();
             //services.AddHttpClient("Refit", options =>
             //	{
             //		options.BaseAddress = new Uri(configuration.GetSection("CatalogUrl").Value);
             //	}).AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
             //	.AddTypedClient(Refit.RestService.For<ICatalogServiceRefit>);
 
-		}
+        }
 	}
 }

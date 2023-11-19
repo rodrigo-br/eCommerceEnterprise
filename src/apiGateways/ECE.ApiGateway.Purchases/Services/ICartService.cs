@@ -8,7 +8,7 @@ namespace ECE.ApiGateway.Purchases.Services
         Task<CartDTO> GetCart();
         Task<int> GetCartAmount();
         Task<ResponseResult> AddProductCart(ProductCartDTO productCart);
-        Task<ResponseResult> UpdateProductCart(ProductCartDTO productCart);
+        Task<ResponseResult> UpdateProductCart(Guid productId, ProductCartDTO productCart);
         Task<ResponseResult> DeleteProductCart(Guid productId);
     }
 }

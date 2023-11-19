@@ -1,4 +1,5 @@
 ﻿using ECE.ApiGateway.Purchases.Extensions;
+using ECE.ApiGateway.Purchases.Models;
 using Microsoft.Extensions.Options;
 
 namespace ECE.ApiGateway.Purchases.Services
@@ -11,6 +12,15 @@ namespace ECE.ApiGateway.Purchases.Services
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri(settings.Value.CartUrl);
+        }
+
+        public async Task<ProductDTO> GetProductById(Guid productId)
+        {
+            var response = await _httpClient.GetAsync($"/api/catalog/products/{productId}");
+
+            HandleResponseErrors(response);
+
+            return await DeserializeObjectResponse<ProductDTO>(response);
         }
     }
 }
