@@ -1,4 +1,5 @@
-﻿using ECE.WebApi.Core.Controllers;
+﻿using ECE.ApiGateway.Purchases.Services;
+using ECE.WebApi.Core.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,15 @@ namespace ECE.ApiGateway.Purchases.Controllers
     [Authorize]
     public class CartController : MainController
     {
+        private readonly ICartService _cartService;
+        private readonly ICatalogService _catalogService;
+
+        public CartController(ICartService cartService, ICatalogService catalogService)
+        {
+            _cartService = cartService;
+            _catalogService = catalogService;
+        }
+
         [HttpGet]
         [Route("purchases/cart")]
         public async Task<IActionResult> Index()
@@ -20,6 +30,7 @@ namespace ECE.ApiGateway.Purchases.Controllers
         [Route("purchases/cart-amount")]
         public async Task<IActionResult> GetCartAmount()
         {
+            // Implementar no serviço
             return CustomResponse();
         }
 

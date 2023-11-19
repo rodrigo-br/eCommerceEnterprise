@@ -1,4 +1,5 @@
-﻿using ECE.WebApp.MVC.Extensions;
+﻿using ECE.Core.Communication;
+using ECE.WebApp.MVC.Extensions;
 using ECE.WebApp.MVC.Models;
 using Microsoft.Extensions.Options;
 

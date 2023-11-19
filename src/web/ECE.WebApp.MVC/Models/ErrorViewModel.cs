@@ -6,16 +6,4 @@ namespace ECE.WebApp.MVC.Models
         public string Title { get; set; }
         public string Message { get; set; }
     }
-
-    public class ResponseResult
-    {
-        public string Title { get; set; }
-        public int Status { get; set; }
-        public ResponseErrorMessages Errors { get; set; } = new ResponseErrorMessages();
-    }
-
-    public class ResponseErrorMessages
-    {
-        public List<string> Messages { get; set; } = new List<string>();
-    }
 }

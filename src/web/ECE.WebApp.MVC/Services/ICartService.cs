@@ -1,4 +1,5 @@
-﻿using ECE.WebApp.MVC.Models;
+﻿using ECE.Core.Communication;
+using ECE.WebApp.MVC.Models;
 
 namespace ECE.WebApp.MVC.Services
 {

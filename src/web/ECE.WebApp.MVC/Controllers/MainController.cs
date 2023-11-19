@@ -1,4 +1,4 @@
-﻿using ECE.WebApp.MVC.Models;
+﻿using ECE.Core.Communication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECE.WebApp.MVC.Controllers

@@ -1,6 +1,7 @@
 ﻿using ECE.WebApp.MVC.Extensions;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using ECE.Core.Communication;
 
 namespace ECE.WebApp.MVC.Models
 {
